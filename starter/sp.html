@@ -1,0 +1,87 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../components/core-icons/core-icons.html">
+<link rel="import" href="../components/core-icon/core-icon.html">
+<link rel="import" href="../components/paper-button/paper-button.html">
+<link rel="import" href="../components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../components/paper-input/paper-input.html">
+<link rel="import" href="../components/paper-input/paper-input.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/core-menu/core-menu.html">
+<link rel="import" href="../components/paper-item/paper-item.html">
+<link rel="import" href="../components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../components/paper-dropdown/paper-dropdown.html">
+
+
+
+
+<polymer-element name="supplier-form" attributes="sl_name sl_type">
+	<template>
+		<style>
+			:host{
+				min-height: 300px;
+			};
+		</style>
+			
+			<!-- <core-pages> -->
+			
+			<div>
+				<form method="post">
+					
+					<paper-input-decorator label="Supplier Name">
+						<input type="text" id="sl_name" name="sl_name"/>
+					</paper-input-decorator>
+
+					<paper-input-decorator label="Supplier Address">
+						<input type="text" id="sl_address" name="sl_address"/>
+					</paper-input-decorator>
+
+					
+						<paper-dropdown-menu label="Supplier Type">
+						    <paper-dropdown class="dropdown">
+						        <core-menu id="sl_type" class="menu">
+						            <paper-item>Parts</paper-item>
+						            <paper-item label="Accessories">Accessories</paper-item>
+						            <paper-item>Wheels</paper-item>
+							            
+							        </core-menu>
+							    </paper-dropdown>
+							</paper-dropdown-menu>
+
+					
+
+					
+					<paper-button on-tap="{{submit}}" raised>Submit</paper-button>
+				</form>
+				
+				 <core-ajax id="submitform"
+			      auto="false"
+			      url="../api/newsupplier.php"
+			      params='{"sl_name":"{{sl_name}}","sl_address":"{{sl_address}}" }'
+			      method="POST"
+			      on-core-response="{{submitsuccessful}}"
+			      handleAs="json">
+			    </core-ajax>
+		    </div>
+		   <!-- </core-pages> -->
+	</template>
+	<script>
+		Polymer({submit:function(){
+			var sl_name = (this.$.sl_name.value);
+			
+			var sl_address = (this.$.sl_address.value);
+			var sl_type = (this.$.sl_type.selected.label);
+
+			this.sl_name = sl_name;
+			this.sl_address = sl_address;
+
+			this.$.submitform.go();
+		},
+		submitsuccessful:function(){
+				
+			  location.reload();
+		},
+
+		});
+	</script>
+</polymer-element>

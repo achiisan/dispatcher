@@ -1,0 +1,79 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../post-service/post-service.html">
+<link rel="import" href="post-card.php">
+
+<polymer-element name="post-list" attributes="show">
+  <template>
+    <style>
+    :host {
+      display: block;
+      width: 100%;
+    }
+    post-card {
+      margin-bottom: 30px;
+    }
+    </style>
+    <post-service id="service" posts="{{posts}}" url="../api/getdeliveries.php">
+    </post-service>
+
+    <div layout vertical center>
+
+  <template repeat="{{post in posts }}" if="{{show != null }}">
+    <template if="{{post.d_status == show }}">
+
+        <post-card d_id="{{post.d_id}}" d_name="{{post.d_details}}"  on-receive="{{handlereceive}}" d_status="{{post.d_status}}" type="ADMIN">
+             
+              <ch-text>{{post.sl_name}}</ch-text>
+             
+                <ch-status>STATUS: {{post.d_status}}</ch-status>
+              
+              <template if="{{post.d_status === 'DISPATCHED'}}">
+              <time>DISPATCHED on: {{post.d_startdate}}</time>
+              </template>
+             
+              <main-panel>{{post.d_details}}</main-panel>
+              <time2>ETA: {{post.d_eta}}</time2>
+               <template if="{{post.d_status === 'ARRIVED'}}">
+              <ch-arrivaltime>ARRIVED on: {{post.d_enddate}}</ch-arrivaltime>
+              </template>
+             
+        </post-card>
+    </template>
+</template>
+    <template repeat="{{post in posts }}" if="{{show == null }}">'
+    
+
+        <post-card d_id="{{post.d_id}}" d_name="{{post.d_details}}" on-receive="{{handlereceive}}" d_status="{{post.d_status}}" type="ADMIN">
+             
+                
+              <ch-text>{{post.sl_name}}</ch-text>
+             
+                <ch-status>STATUS: {{post.d_status}}</ch-status>
+              
+              <template if="{{post.d_status === 'DISPATCHED'}}">
+              <time>DISPATCHED on: {{post.d_startdate}}</time>
+              </template>
+             
+              <main-panel>{{post.d_details}}</main-panel>
+              <time2>ETA: {{post.d_eta}}</time2>
+               <template if="{{post.d_status === 'ARRIVED'}}">
+              <ch-arrivaltime>ARRIVED on: {{post.d_enddate}}</ch-arrivaltime>
+              </template>
+
+            </post-card>
+   
+
+
+  </template>
+
+</div>
+    <!-- add markup here -->
+    
+  </template>
+
+  <script>
+  Polymer({});
+
+  </script>
+
+</polymer-element>

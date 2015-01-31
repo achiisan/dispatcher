@@ -1,0 +1,33 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+
+<polymer-element name="post-service" attributes="posts url">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+    <core-ajax id="ajax"
+      auto
+      url="{{url}}"
+      on-core-response="{{postsLoaded}}"
+      handleAs="json">
+    </core-ajax>
+  </template>
+  <script>
+  Polymer('post-service', {
+    created: function() {
+        console.log('Nag load.');
+      this.posts = [];
+    },
+    postsLoaded: function() {
+      // Make a copy of the loaded data
+      this.posts = this.$.ajax.response.slice(0);
+      
+    },
+  
+   
+  });
+  </script>
+</polymer-element>

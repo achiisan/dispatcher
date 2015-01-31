@@ -1,0 +1,64 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../components/core-icons/core-icons.html">
+<link rel="import" href="../components/core-icon/core-icon.html">
+<link rel="import" href="../components/paper-button/paper-button.html">
+<link rel="import" href="../components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../components/paper-input/paper-input.html">
+<link rel="import" href="../components/paper-input/paper-input.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../post-service/post-service.html">
+
+<polymer-element name="add-form" attributes="od eta">
+	<template>
+		<style>
+		</style>
+		 <post-service id="service" posts="{{posts}}" url="../api/allsuppliers.php">
+    	</post-service>
+			<form method="post">
+				<p>Place your order to:</p>
+					
+				<select id="wee">
+					<template repeat="{{post in posts}}">
+						<option value="{{post.sl_id}}">{{post.sl_name}}</option>
+					 
+					</template>
+				</select>
+				<paper-input-decorator label="Order Information">
+					<input type="text" id="orderdetails" name="order-details"/>
+				</paper-input-decorator>
+
+				<paper-input-decorator label="ETA">
+					<p>ETA</p>
+					<input type="date" id="eta"/>
+				</paper-input-decorator>
+				<paper-button on-tap="{{submit}}" raised>Submit</paper-button>
+			</form>
+		
+			 <core-ajax id="submitform"
+		      auto="false"
+		      url="../api/submitdelivery.php"
+		      params='{"od":"{{od}}","eta":"{{eta}}" }'
+		      method="POST"
+		      on-core-response="{{submitsuccessful}}"
+		      handleAs="json">
+		    </core-ajax>
+
+	</template>
+	<script>
+		Polymer({submit:function(){
+			var od = (this.$.orderdetails.value);
+			
+			var eta = (this.$.eta.value);
+
+			this.od  = od 
+			 this.eta = eta;
+			
+			this.$.submitform.go();
+		},
+		submitsuccessful:function(){
+			  location.reload();
+		}
+		});
+	</script>
+</polymer-element>
